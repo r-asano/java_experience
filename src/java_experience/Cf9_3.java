@@ -1,11 +1,13 @@
 package java_experience;
-// SQL送信パターン　①更新系
+// SQL送信パターン　①検索系
+
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
-public class Cf9_2 {
+public class Cf9_3 {
 	public static void main(String[] args) {
 		try {
 			/*
@@ -27,25 +29,20 @@ public class Cf9_2 {
 				 * STEP2 : SQL送信処理
 				 */
 
-				// ①-１　送信すべきSQL文の雛形を準備
+				// ②-１　送信すべきSQL文の雛形を準備
 				PreparedStatement pStatement = connection.prepareStatement
-						("DELETE FROM MONSTERS WHERE HP <= ? OR NAME = ?");
+						("SELECT FROM MONSTERS WHERE HP >= ?");
 				){
-			// ①-２　雛形に値を流し込みSQL文を組み立て送信する 注意！最初は0番目ではなく1番目
+			// ②-２　雛形に値を流し込みSQL文を組み立て送信する
 			pStatement.setInt(1, 10);          // 1番目の？に10を流しこむ
-			pStatement.setString(2, "ゾンビ"); // 2番目の？にゾンビを流し込む
-			int r = pStatement.executeUpdate();
+			ResultSet resultset = pStatement.executeQuery();
 
-			// ①-３　処理結果を判定する
-			if (r != 0) {
-				System.out.println(r + "件のモンスターを削除しました");
-			} else {
-				System.out.println("該当するモンスターはいませんでした");
-			}
-
-			pStatement.setInt(1, 20);          // パラメータを変えて2度目の更新
-			r = pStatement.executeUpdate();
-
+			// ②-３　結果表を処理する
+			/* *************************************
+			 *
+			 * 結果表の処理（後述）
+			 *
+			**************************************** */
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
