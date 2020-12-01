@@ -17,12 +17,17 @@ public class Cf9_2 {
 			e.printStackTrace();
 		}
 
-		try (
-				/*
-				 * STEP1 : データベースの接続
-				 */
-				Connection connection = DriverManager.
-						getConnection("jdbc:mysql://localhost/java_experience?serverTimezone=JST","root","#Infinity22");
+		/*
+		 * このようにtry文の外で宣言しないとtry文内で宣言した変数はcatch文で使うことが出来ない
+		 * 同様にtry()も使えないので、finallyでクローズの宣言を行う
+		 */
+		Connection connection = null;
+		try {
+			/*
+			 * STEP1 : データベースの接続
+			 */
+			connection = DriverManager.
+					getConnection("jdbc:mysql://localhost/java_experience?serverTimezone=JST","root","#Infinity22");
 				/*
 				 * STEP2 : SQL送信処理
 				 */
@@ -30,7 +35,6 @@ public class Cf9_2 {
 				// ①-１　送信すべきSQL文の雛形を準備
 				PreparedStatement pStatement = connection.prepareStatement
 						("DELETE FROM MONSTERS WHERE HP <= ? OR NAME = ?");
-				){
 			// ①-２　雛形に値を流し込みSQL文を組み立て送信する 注意！最初は0番目ではなく1番目
 			pStatement.setInt(1, 10);          // 1番目の？に10を流しこむ
 			pStatement.setString(2, "ゾンビ"); // 2番目の？にゾンビを流し込む
